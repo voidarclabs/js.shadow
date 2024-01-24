@@ -1,3 +1,8 @@
 function files() {
-    document.getElementById('apps').src = 'apps/files.html'
+    document.getElementById('app-frame').src = 'apps/files.html'
+    document.getElementById('apps').className = 'open'
+}
+
+function closeApps() {
+    document.getElementById('apps').className = 'closed'
 }

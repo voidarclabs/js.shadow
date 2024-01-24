@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <script src="/socket.io/socket.io.js"></script>
-    <link rel="stylesheet" href="appstyles.css">
+    <link rel="stylesheet" href="files.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
+    <div id="fileList"></div>
     <script>
         var socket = io()
         socket.on('connect', (data) => {
             console.log(data)
+        })
+        socket.on('filelist', (data) => {
+            document.getElementById('filelist').innerHTML = data
         })
     </script>
 </body>
