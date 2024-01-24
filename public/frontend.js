@@ -5,4 +5,5 @@ function files() {
 
 function closeApps() {
     document.getElementById('apps').className = 'closed'
+    console.log('e')
 }

@@ -8,14 +8,18 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="fileList"></div>
+    <div id="fileList">incorrect connections</div>
     <script>
         var socket = io()
         socket.on('connect', (data) => {
             console.log(data)
+            socket.emit('files')
         })
         socket.on('filelist', (data) => {
-            document.getElementById('filelist').innerHTML = data
+            for (file in data){
+            fileHtml = `<div id='file' href='/files/${file}'>${file}</div>`
+            document.getElementById('fileList').append(fileHtml)
+            };
         })
     </script>
 </body>
