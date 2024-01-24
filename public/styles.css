@@ -11,7 +11,7 @@ body {
     position: absolute;
 }
 .closed {
-    margin-top: calc(100vh - 200vh - 30px);
+    margin-top: calc(100vh - 200vh + 10px);
 }
 
 #apps {
