@@ -28,15 +28,18 @@
             for (let i = 0; i < data.length; i++){
                 file = data[i]
                 fileHtml = ` <div id='file'>
+                        <div id='filefrontoption' onclick='select()'>e</div>
                         <a href='/files/${file}' download>${file}</a>
-                        <div id='filemenu${i}'></div>
+                        <div class='filemenuoptions' id='filemenu${i}'></div>
                     </div>\n`
-                replacefilelist()
                 document.getElementById('fileList').innerHTML += fileHtml
                 document.getElementById(`filemenu${i}`).innerHTML += menuelements
             };
         })
 
+function select() {
+    console.log('1')
+}
 const menuelements = [`<div class='fileicon' id='edit'><ion-icon name="pencil"></ion-icon></div>`]
 
     </script>
