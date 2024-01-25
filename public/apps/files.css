@@ -1,3 +1,49 @@
 body {
-    background-color: blueviolet;
+    background-color: whitesmoke;
+    font-family: 'Varela Round';
+    font-size: larger;
+}
+
+#fileselect {
+    filter: drop-shadow(5px 5px 10px gray);
+    padding: 10px;
+    background-color: white;
+    height: calc(100% - 10px - 30px);
+    width: calc(100% - 40px);
+    position:absolute;
+    border-radius: 30px;
+}
+
+#topbar {
+    margin: 5px;
+    padding: 5px;
+    background-color: white;
+    filter: drop-shadow(3px 3px 10px gray);
+    border-radius: 5px;
+}
+
+#fileList {
+    margin: 5px;
+    margin-top: 10px;
+    padding: 0px;
+
+    filter: drop-shadow(3px 3px 10px gray);
+}
+
+#fileList :first-child {
+    border-radius: 10px 10px 0px 0px;
+    border-width: 0px 0px 1px 0px ;
+}
+
+#fileList :last-child {
+    border-radius: 0px 0px 10px 10px;
+    border-width: 1px 0px 0px 0px ;
+}
+
+#file {
+    padding: 5px;
+    background-color: white;
+    border-color: rgb(224, 224, 224);
+    border-style: solid;
+    border-width: 1px 0px 1px 0px;
 }

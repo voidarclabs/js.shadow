@@ -1,7 +1,7 @@
 const express = require('express');
 const socketio = require('socket.io');
 const path = require('path');
-const fileSys = './filesys/';
+const fileSys = './public/filesys/';
 const fs = require('fs');
 
 const app = express();
@@ -25,14 +25,9 @@ const io = socketio(server)
 io.on('connection', (socket) => {
     console.log(socket.id)
     socket.on('files', () => {
-        var filelist = []
         fs.readdir(fileSys, (err, files) => {
+            socket.emit('filelist', files)
             console.log(files)
-            for (file in files){
-            fileHtml = `<div id='file' href='/files/${file}'>${file}</div>`
-            filelist.push_back(fileHtml)
-            }
-            socket.emit('filelist', filelist)
         });
     })
 

@@ -4,11 +4,19 @@
     <meta charset="UTF-8">
     <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" href="files.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'>
     <title>Document</title>
 </head>
 <body>
-    <div id="fileList">incorrect connections</div>
+    <div id="fileselect">
+        <div id="topbar">
+            hi i am a top barrrr
+        </div>
+        <div id="fileList"></div>
+    </div>
     <script>
         var socket = io()
         socket.on('connect', (data) => {
@@ -16,11 +24,21 @@
             socket.emit('files')
         })
         socket.on('filelist', (data) => {
-            for (file in data){
-            fileHtml = `<div id='file' href='/files/${file}'>${file}</div>`
-            document.getElementById('fileList').append(fileHtml)
+            console.log(data)
+            for (let i = 0; i < data.length; i++){
+                file = data[i]
+                fileHtml = ` <div id='file'>
+                        <a href='/files/${file}' download>${file}</a>
+                        <div id='filemenu${i}'></div>
+                    </div>\n`
+                replacefilelist()
+                document.getElementById('fileList').innerHTML += fileHtml
+                document.getElementById(`filemenu${i}`).innerHTML += menuelements
             };
         })
+
+const menuelements = [`<div class='fileicon' id='edit'><ion-icon name="pencil"></ion-icon></div>`]
+
     </script>
 </body>
 </html>
