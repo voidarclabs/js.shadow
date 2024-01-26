@@ -28,10 +28,9 @@
             for (let i = 0; i < data.length; i++){
                 file = data[i]
                 fileHtml = ` <div id='file'>
-                        <div id='filefrontoption' onclick='select()'>e</div>
                         <a href='/files/${file}' download>${file}</a>
                         <div class='filemenuoptions' id='filemenu${i}'></div>
-                    </div>\n`
+                    </div>`
                 document.getElementById('fileList').innerHTML += fileHtml
                 document.getElementById(`filemenu${i}`).innerHTML += menuelements
             };
@@ -40,7 +39,8 @@
 function select() {
     console.log('1')
 }
-const menuelements = [`<div class='fileicon' id='edit'><ion-icon name="pencil"></ion-icon></div>`]
+const menuelements = [`<div class='fileicon' id='edit'><ion-icon name="pencil"></ion-icon></div>
+<div class='fileicon' id='delete'><ion-icon name="trash"></ion-icon></div>`]
 
     </script>
 </body>

@@ -50,8 +50,18 @@ body {
 
 .filemenuoptions {
     float: right;
+    position: absolute;
+    right: 0;
+    display: flex;
+    top: 0; 
+    /* use grid dumbass auto lollll */
 }
 
 #filefrontoption {
-    
+    height: 100%;
+    width: 5px;
+}
+
+.fileicon {
+    top: 0;
 }
