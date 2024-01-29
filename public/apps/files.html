@@ -28,7 +28,8 @@
             for (let i = 0; i < data.length; i++){
                 file = data[i]
                 fileHtml = ` <div id='file'>
-                        <a href='/files/${file}' download>${file}</a>
+                        <ion-icon id='fileselecter' name="checkmark-circle-outline"></ion-icon>
+                        <a id='filelink' href='/files/${file}' download>${file}</a>
                         <div class='filemenuoptions' id='filemenu${i}'></div>
                     </div>`
                 document.getElementById('fileList').innerHTML += fileHtml
