@@ -28,20 +28,26 @@
             for (let i = 0; i < data.length; i++){
                 file = data[i]
                 fileHtml = ` <div id='file'>
-                        <ion-icon id='fileselecter' name="checkmark-circle-outline"></ion-icon>
+                        <ion-icon onclick="select(${file})" id='fileselecter' name="checkmark-circle-outline"></ion-icon>
                         <a id='filelink' href='/files/${file}' download>${file}</a>
-                        <div class='filemenuoptions' id='filemenu${i}'></div>
+                        <div class='filemenuoptions' id='filemenu${i}'>
+                            <ion-icon id='fileedit' name="pencil"></ion-icon>
+                            <ion-icon onclick='delete('${file}')' id='filedelete' name="trash"></ion-icon>
+                        </div>
                     </div>`
                 document.getElementById('fileList').innerHTML += fileHtml
-                document.getElementById(`filemenu${i}`).innerHTML += menuelements
+                // document.getElementById(`filemenu${i}`).innerHTML += menuelements
             };
         })
 
 function select() {
     console.log('1')
 }
-const menuelements = [`<ion-icon id='fileedit' name="pencil"></ion-icon>
-<ion-icon id='filedelete' name="trash"></ion-icon>`]
+
+function deletefile(file) {
+    socket.emit('delete', file)
+}
+const menuelements = []
 
     </script>
 </body>

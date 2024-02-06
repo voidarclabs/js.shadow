@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public'));
 });
 
-const server = app.listen(3002, () => {
+const server = app.listen(3000, () => {
     console.log('Server running!')
 });
 
@@ -26,24 +26,24 @@ const io = socketio(server)
 io.on('connection', (socket) => {
     console.log(socket.id)
     socket.on('files', () => {
-        updatefilelist()
+        updatefilelist(socket)
     })
     socket.on('delete', (data) => {
-        deletefile()
-        setTimeout(() => { updatefilelist() }, 500);
+        deletefile(data, socket)
     })
 })
 
-function updatefilelist() {
+function updatefilelist(socket) {
     fs.readdir(fileSys, (err, files) => {
-        socket.emit('filelist', files)
+        if (err) throw err;
         console.log(files)
+        socket.emit('filelist', files)
     });
 }
 
 
 
-function deletefile(file) {
+function deletefile(file, socket) {
     exec(`rm ${file}`, (error, stdout, stderr) => {
         if (error) {
             console.log(`error: ${error.message}`);
@@ -54,5 +54,6 @@ function deletefile(file) {
             return;
         }
         console.log(`stdout: ${stdout}`);
+        updatefilelist(socket)
     });
 }
