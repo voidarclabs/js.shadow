@@ -3,7 +3,7 @@ const socketio = require('socket.io');
 const path = require('path');
 const fileSys = './public/filesys/';
 const fs = require('fs');
-
+const nthline = require('nthline')
 const nodemailer = require('nodemailer');
 
 const app = express();
@@ -36,15 +36,19 @@ io.on('connection', (socket) => {
     })
 
     socket.on('email', () => {
+        
+        var logininfo = fs.readFileSync('file.txt').toString().split("\n");
         socket.on('logindetails', (data) => {
             let sender = data[0]
             console.log(data)
+            fs.writeFileSync('login', data[0]+'\n')
+            fs.writeFileSync('login', data[1]+'\n')
             let mailTransporter = nodemailer.createTransport(
                     {
                         service: 'gmail',
                         auth: {
-                            user: data[0],
-                            pass: data[1]
+                            user: 'dominicbourne77@gmail.com', //data[0],
+                            pass: 'toah ymdc fjuk vqvb' //data[1]
                         }
                     }
                 );
