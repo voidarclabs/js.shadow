@@ -4,6 +4,8 @@ const path = require('path');
 const fileSys = './public/filesys/';
 const fs = require('fs');
 
+const nodemailer = require('nodemailer');
+
 const app = express();
 
 app.use(express.static(path.resolve(__dirname, 'public', '')));
@@ -28,8 +30,41 @@ io.on('connection', (socket) => {
     socket.on('files', () => {
         updatefilelist(socket)
     })
+
     socket.on('delete', (data) => {
         deletefile(data, socket)
+    })
+
+    socket.on('email', () => {
+        socket.on('logindetails', (data) => {
+            let sender = data[0]
+            console.log(data)
+            let mailTransporter = nodemailer.createTransport(
+                    {
+                        service: 'gmail',
+                        auth: {
+                            user: data[0],
+                            pass: data[1]
+                        }
+                    }
+                );
+            socket.on('email', (data) => {
+                console.log(data)
+                let mailDetails = {
+                    from: sender,
+                    to: data[0],
+                    subject: data[1],
+                    text: data[2]
+                };
+                mailTransporter.sendMail(mailDetails,function (err, data) {if (err) {
+                    console.log('Error Occurs');
+                    console.log(err)
+                } else {
+                    console.log('Email sent successfully');
+                }
+            });
+            })
+        })
     })
 })
 

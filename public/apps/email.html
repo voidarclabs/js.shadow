@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="email.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="open-login-popup-btn">Open Login Popup</button>
+    <button onclick="sendmail()"></button>
+    <div id="login-popup-container">
+        <span id="close-login-btn" onclick="closeLoginPopup()">✖</span>
+        <div id="login-form">
+            <h2>Login</h2>
+            <form id="loginForm" action="javascript:void(0);" onsubmit="handleLogin()">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+        
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+        
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+    <form id="emailForm">
+        <!-- <label for="sender">Sender:</label>
+        <input type="text" id="sender" placeholder="Your Email"> -->
+
+        <label for="recipient">Recipient:</label>
+        <input type="text" id="recipient" placeholder="Recipient's Email">
+
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" placeholder="Subject">
+
+        <label for="message">Message:</label>
+        <textarea id="message" placeholder="Your Message"></textarea>
+
+        <button type="button" onclick="sendEmail()">Send</button>
+    </form>
+
+    <script>
+        var socket = io()
+        socket.on('connect', (data) => {
+            console.log(data)
+            socket.emit('email')
+        })
+
+        const openLoginPopupButton = document.getElementById('open-login-popup-btn');
+        const loginPopupContainer = document.getElementById('login-popup-container');
+
+        openLoginPopupButton.addEventListener('click', () => {
+            loginPopupContainer.style.display = 'block';
+        });
+
+        function closeLoginPopup() {
+            loginPopupContainer.style.display = 'none';
+        }
+
+        function handleLogin() {
+        // Retrieve values from the form
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+
+        // Call the login function with email and password
+        login(email, password);
+        
+        // Prevent form submission (since we're handling it with JavaScript)
+        return false;
+        }
+
+        function login(email, password) {
+            let logindetails = [email, password]
+            socket.emit('logindetails', logindetails)
+        }
+
+        function sendEmail() {
+            // Get values from input boxes
+            var recipient = document.getElementById('recipient').value;
+            var subject = document.getElementById('subject').value;
+            var message = document.getElementById('message').value;
+
+            sendmail(recipient, subject, message)
+        }
+
+        function sendmail(recipient, subject, message) {
+            emailinfo =[recipient, subject, message]
+            socket.emit('email', emailinfo)
+        }
+    </script>
+</body>
+</html>
