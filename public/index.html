@@ -2,25 +2,124 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'>
-    <title>Voidarc Shadow</title>
+    <title>Resizable Draggable Windows</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .draggableDiv {
+            min-height: 200px;
+            min-width: 200px;
+            background-color: rgb(197, 197, 197);
+            position: absolute;
+            cursor: move;
+            overflow: hidden;
+            height: 300px;
+            width: 400px;
+            margin-top: 0px;
+            margin-left: 20px;
+        }
+        .resizer {
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            position: absolute;
+        }
+        .bottom-right-resize {
+            bottom: 0;
+            right: 0;
+            cursor: se-resize;
+        }
+        .topnav {
+            height: 20px;
+            width: 100%;
+        }
+        .appframe {
+            height: calc(100% - 35px);
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-    
-    <div id="buttons">
-        <button id="files" onclick="files()">Files</button>
-        <button id="email" onclick="email()">Email</button>
-    </div>
-    <div class='closed' id="apps">
-        <iframe id="app-frame" src="" frameborder="0"></iframe>
-        <div id="backButton">
-         <button onclick="closeApps()" id="back"><ion-icon name="chevron-up"></ion-icon></button>
-    </div>
-    </div>
+  <div id="windowcontainer"></div>
+  <button onclick="makenewwindow('apps/files.html')">files</button>
     <script src="frontend.js"></script>
+    <script>
+      // Declare isResizing at the top-level scope
+      let isResizing = false;
+
+      function makeResizable(element, resizer) {
+        let originalMouseX;
+        let originalMouseY;
+        let originalWidth;
+        let originalHeight;
+
+        resizer.addEventListener('mousedown', function (e) {
+          isResizing = true;
+          originalMouseX = e.clientX;
+          originalMouseY = e.clientY;
+          originalWidth = element.offsetWidth;
+          originalHeight = element.offsetHeight;
+
+          document.addEventListener('mousemove', handleMouseMove);
+          document.addEventListener('mouseup', () => {
+            isResizing = false;
+            document.removeEventListener('mousemove', handleMouseMove);
+          });
+        });
+
+        function handleMouseMove(e) {
+          if (isResizing) {
+            const deltaX = e.clientX - originalMouseX;
+            const deltaY = e.clientY - originalMouseY;
+
+            const newWidth = Math.max(originalWidth + deltaX, 100);
+            const newHeight = Math.max(originalHeight + deltaY, 100);
+
+            element.style.width = newWidth + 'px';
+            element.style.height = newHeight + 'px';
+          }
+        }
+      }
+
+      function makeDraggable(element) {
+        let offsetX, offsetY, isDragging = false;
+
+        element.addEventListener('mousedown', function (e) {
+          isDragging = true;
+          offsetX = e.clientX - element.getBoundingClientRect().left;
+          offsetY = e.clientY - element.getBoundingClientRect().top;
+
+          bringToFront(element);
+        });
+
+        document.addEventListener('mousemove', function (e) {
+          if (isDragging && !isResizing) {
+            const x = e.clientX - offsetX;
+            const y = e.clientY - offsetY;
+
+            element.style.left = x + 'px';
+            element.style.top = y + 'px';
+          }
+        });
+
+        document.addEventListener('mouseup', function () {
+          isDragging = false;
+        });
+      }
+
+      function bringToFront(element) {
+        const allDivs = document.querySelectorAll('.draggableDiv');
+        allDivs.forEach(div => {
+          div.style.zIndex = 0;
+        });
+
+        element.style.zIndex = 1;
+      }
+
+    </script>
 </body>
 </html>
