@@ -4,16 +4,6 @@ body {
     font-size: larger;
 }
 
-#fileselect {
-    filter: drop-shadow(5px 5px 10px gray);
-    padding: 10px;
-    background-color: white;
-    height: calc(100% - 10px - 30px);
-    width: calc(100% - 40px);
-    position:absolute;
-    border-radius: 30px;
-}
-
 #topbar {
     margin: 5px;
     padding: 5px;
@@ -40,14 +30,19 @@ body {
     border-width: 1px 0px 0px 0px ;
 }
 
-#file {
-    padding: 10px;
+.file {
+    padding: 5px;
     background-color: white;
     border-color: rgb(224, 224, 224);
     border-style: solid;
     border-width: 1px 0px 1px 0px;
     display: grid;
     grid-template-columns: 31px 200px auto 200px;
+    transition: background-color 0.2s;
+}
+
+.fileselected {
+    background-color: #a1fffa;
 }
 
 #filelink {
@@ -56,12 +51,7 @@ body {
     grid-column: 2;
 }
 
-#fileselecter {
-    font-size: 20px;
-    padding: 5px;
-}
-
-ion-icon {
+#selecter {
     font-size: 20px;
     padding: 5px;
 }
@@ -71,5 +61,10 @@ ion-icon {
     height: 100%;
     width: 200px;
     display: flex;
-    
+}
+
+#delete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

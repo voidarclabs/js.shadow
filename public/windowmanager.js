@@ -153,12 +153,12 @@ function makeResizableAndDraggable(element, resizer) {
       }
   }
 
-function makenewwindow(window, appname) {
-    let icondict = {}
-    icondict['files'] = '<img class="appicon" src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Finder_Icon_macOS_Big_Sur.png" alt=""></img>'
-    icondict['email'] = '<img class="appicon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.svg/2048px-Mail_%28iOS%29.svg.png" alt=""></img>'
-    icondict['safari'] = '<img class="appicon" src="https://i.pinimg.com/originals/98/14/6e/98146ec63f05240c321a82f8b35a31c0.png" alt=""></img>'
+let icondict = {}
+icondict['files'] = '<img class="appicon" src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Finder_Icon_macOS_Big_Sur.png" alt=""></img>'
+icondict['email'] = '<img class="appicon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.svg/2048px-Mail_%28iOS%29.svg.png" alt=""></img>'
+icondict['safari'] = '<img class="appicon" src="https://i.pinimg.com/originals/98/14/6e/98146ec63f05240c321a82f8b35a31c0.png" alt=""></img>'
 
+function makenewwindow(window, appname) {
     let newwindow = `<div class="draggableDiv" id="floatingwindow${i}">
                         <div class="topnav">
                             <div onclick="deletewindow('${i}')" id="topnavexit"><i class="fa-solid fa-xmark"></i></div>
@@ -180,7 +180,12 @@ function makenewwindow(window, appname) {
 
 function deletewindow(window) {
     let deletedwindow = document.getElementById(`floatingwindow${window}`)
-    deletedwindow.remove()
+    deletedwindow.style.transition = 'all 0.1s'
+    deletedwindow.style.opacity = '0'
+    setTimeout(() => {
+          deletedwindow.remove()
+    }, 200);
+
 }
 
 function maximisewindow(window) {
@@ -189,8 +194,8 @@ function maximisewindow(window) {
         
         maximisedwindow.style.top = '20px'
         maximisedwindow.style.left = '20px'
-        maximisedwindow.style.height = '300px'
-        maximisedwindow.style.width = '400px'
+        maximisedwindow.style.height = '450px'
+        maximisedwindow.style.width = '625px'
         maximisedwindow.classList.remove('max')
         setTimeout(() => {
             maximisedwindow.style.transition = ''
@@ -204,3 +209,11 @@ function maximisewindow(window) {
     maximisedwindow.style.width = '100%'
     maximisedwindow.classList.add('max')
 }}
+
+function minimisewindow(window) {
+  const minimisedwindow = document.getElementById(`floatingwindow${window}`)
+  minimisedwindow.style.minHeight = '0'
+  minimisedwindow.style.minWidth = '0'
+  minimisedwindow.style.height = '0'
+  minimisedwindow.style.width = '0'
+}

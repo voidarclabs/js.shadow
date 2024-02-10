@@ -8,9 +8,11 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'>
+    <script src="https://kit.fontawesome.com/ea3f46344d.js" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
 <body>
+    
     <div id="fileselect">
         <div id="topbar">
             hi i am a top barrrr
@@ -27,21 +29,35 @@
             console.log(data)
             for (let i = 0; i < data.length; i++){
                 file = data[i]
-                fileHtml = ` <div id='file'>
-                        <ion-icon onclick="select(${file})" id='fileselecter' name="checkmark-circle-outline"></ion-icon>
+                fileHtml = ` <div class='file' id='file-${file}'>
+                        <div onclick="select('${file}')" id="selecter"><i id='selectmark${file}' class=" fa-regular fa-circle-check"></i></div>
                         <a id='filelink' href='/files/${file}' download>${file}</a>
                         <div class='filemenuoptions' id='filemenu${i}'>
-                            <ion-icon id='fileedit' name="pencil"></ion-icon>
-                            <ion-icon onclick='delete('${file}')' id='filedelete' name="trash"></ion-icon>
+                            <div onclick='delete(${file})' id="delete"><i class="fa-solid fa-trash"></i></div>
+                            
                         </div>
                     </div>`
                 document.getElementById('fileList').innerHTML += fileHtml
-                // document.getElementById(`filemenu${i}`).innerHTML += menuelements
             };
         })
 
-function select() {
-    console.log('1')
+var selected = []
+
+function select(file) {
+    const selectfile = document.getElementById(`selectmark${file}`)
+    const filecontainer = document.getElementById(`file-${file}`)
+    const index = selected.indexOf(file);
+        if (index > -1) { // only splice array when item is found
+            selected.splice(index, 1); // 2nd parameter means remove one item only
+            selectfile.classList.remove('fa-solid')
+            selectfile.classList.add('fa-regular')
+            filecontainer.classList.remove('fileselected')
+        } else {
+            selected.push(file)
+            selectfile.classList.remove('fa-regular')
+            selectfile.classList.add('fa-solid')
+            filecontainer.classList.add('fileselected')
+        }
 }
 
 function deletefile(file) {
