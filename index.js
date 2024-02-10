@@ -13,6 +13,7 @@ app.use(express.static(path.resolve(__dirname, 'public', '')));
 // Serve static files from the 'app' subfolder
 app.use('/apps', express.static(path.resolve(__dirname, 'public', 'apps')));
 app.use('/files', express.static(path.resolve(__dirname, 'public', 'filesys')));
+app.use('/imgs', express.static(path.resolve(__dirname, 'public', 'imgs')));
 app.use('/term', express.static('localhost:6060'))
 
 app.get('/', (req, res) => {

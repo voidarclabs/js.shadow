@@ -154,20 +154,21 @@ function makeResizableAndDraggable(element, resizer) {
   }
 
 let icondict = {}
-icondict['files'] = '<img class="appicon" src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Finder_Icon_macOS_Big_Sur.png" alt=""></img>'
-icondict['email'] = '<img class="appicon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.svg/2048px-Mail_%28iOS%29.svg.png" alt=""></img>'
-icondict['safari'] = '<img class="appicon" src="https://i.pinimg.com/originals/98/14/6e/98146ec63f05240c321a82f8b35a31c0.png" alt=""></img>'
+icondict['files'] = '<img draggable="false" class="appicon" src="imgs/files.png" alt=""></img>'
+icondict['email'] = '<img draggable="false" class="appicon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Mail_%28iOS%29.svg/2048px-Mail_%28iOS%29.svg.png" alt=""></img>'
+icondict['safari'] = '<img draggable="false" class="appicon" src="imgs/safari.png" alt=""></img>'
 
 function makenewwindow(window, appname) {
     let newwindow = `<div class="draggableDiv" id="floatingwindow${i}">
-                        <div class="topnav">
+                        <div class="topnav" id='topnav${i}'>
                             <div onclick="deletewindow('${i}')" id="topnavexit"><i class="fa-solid fa-xmark"></i></div>
                             <div onclick="minimisewindow('${i}')" id="topnavminimise"><i class="fa-solid fa-minus"></i></div>
                             <div onclick="maximisewindow('${i}')" id="topnavmaximise"><i class="fa-solid fa-maximize"></i></div>
                         </div>
-                        <div id=appname>${icondict[appname]}</div>
-                        <iframe is="x-frame-bypass" class="appframe" src="${window}" frameborder="0"></iframe>
+                        <div class='appname' id='appname${i}'>${icondict[appname]}</div>
+                        <iframe id='appframe${i}' is="x-frame-bypass" class="appframe" src="${window}" frameborder="0"></iframe>
                         <div class="resizer bottom-right-resize" id="resizer${i}"></div>
+                        <div class="unmin" id="unmin${i}" onclick="minimisewindow('${i}')"><i id="unminicon${i}" class="fa-solid fa-minus unminicon"></div>
                     </div>`;
   document.getElementById('windowcontainer').innerHTML += newwindow;
 
@@ -210,10 +211,51 @@ function maximisewindow(window) {
     maximisedwindow.classList.add('max')
 }}
 
+
+
 function minimisewindow(window) {
-  const minimisedwindow = document.getElementById(`floatingwindow${window}`)
-  minimisedwindow.style.minHeight = '0'
-  minimisedwindow.style.minWidth = '0'
-  minimisedwindow.style.height = '0'
-  minimisedwindow.style.width = '0'
+  const minimisedwin = document.getElementById(`floatingwindow${window}`)
+  const miniframe = document.getElementById(`appframe${window}`)
+  const miniappname = document.getElementById(`appname${window}`)
+  const miniresizer = document.getElementById(`resizer${window}`)
+  const unmin = document.getElementById(`unmin${window}`)
+  const unminicon = document.getElementById(`unminicon${window}`)
+  const minitopbar = document.getElementById(`topnav${window}`)
+
+  if (minimisedwin.classList.contains('min')) {
+    minimisedwin.classList.remove('min')
+    setTimeout(() => {
+      minimisedwin.style.transition = ''
+    }, 100);
+    minitopbar.style.height = ''
+    miniresizer.style.height = ''
+    minimisedwin.style.minHeight = ''
+    minimisedwin.style.minWidth = ''
+    minimisedwin.style.height = ''
+    minimisedwin.style.width = ''
+    miniappname.style.height = ''
+    miniframe.style.display = ''
+    unmin.style.display = ''
+    unminicon.style.display = ''
+    if (minimisedwin.classList.contains('max')) {
+      minimisedwin.classList.remove('max')
+    }
+  } else {
+    minimisedwin.classList.add('min')
+    minimisedwin.style.transition = 'height 0.1s, width 0.1s'
+    minitopbar.style.height = 0
+    miniresizer.style.height = 0
+    minimisedwin.style.minHeight = '0'
+    minimisedwin.style.minWidth = '0'
+    minimisedwin.style.height = '70px'
+    minimisedwin.style.width = '70px'
+    miniappname.style.height = '100%'
+    miniframe.style.display = 'none'
+    unmin.style.display = 'flex'
+    unminicon.style.display = 'block'
+    if (minimisedwin.classList.contains('max')) {
+      minimisedwin.classList.remove('max')
+    }
+  }
+
 }
