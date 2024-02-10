@@ -37,7 +37,7 @@ io.on('connection', (socket) => {
 
     socket.on('email', () => {
         
-        var logininfo = fs.readFileSync('file.txt').toString().split("\n");
+        var logininfo = fs.readFileSync('login').toString().split("\n");
         socket.on('logindetails', (data) => {
             let sender = data[0]
             console.log(data)
