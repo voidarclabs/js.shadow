@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/ea3f46344d.js" crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'>
     <title>Voidarc</title>
     <style>
         body {
+            font-family: 'Varela Round';
             padding: 0;
             margin: 0;
-            min-height: 100vh;
+            height: 100vh;
             background-image: url(https://www.shutterstock.com/image-vector/colorful-abstract-organic-shape-print-600nw-2187097899.jpg);
         }
         .fa-solid {
@@ -128,13 +130,38 @@
           height: 70px;
           width: 70px;
         }
+
+        .appicon-desktop .appicon{
+          height: 60px;
+          width: 60px;
+        }
+
+        #appcontainer {
+          top: 0;
+          padding: 5px;
+        }
+
+        .app-desktop {
+          display: grid;
+          margin-bottom: 10px;
+          width: 60px;
+          background-color: rgba(204, 204, 204, 0.514);
+          backdrop-filter: blur(15px);
+          border-radius: 10px;
+        }
+
+        .appname-desktop {
+          text-align: center;
+        }
+
+        .appname-desktop::first-letter {
+          text-transform:capitalize;
+        }
     </style>
 </head>
 <body>
   <div id="windowcontainer"></div>
-  <button onclick="makenewwindow('apps/files.html', 'files')">files</button>
-  <button onclick="makenewwindow('apps/email.html', 'email')">email</button>
-  <button onclick="makenewwindow('https://www.google.com/search?igu=1', 'safari')">email</button>
+  <div id="appcontainer"></div>
     <script src="windowmanager.js"></script>
 </body>
 </html>

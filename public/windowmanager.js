@@ -259,3 +259,22 @@ function minimisewindow(window) {
   }
 
 }
+let appslist = {}
+appslist['files'] = `apps/files.html`
+appslist['email'] = `apps/email.html`
+appslist['safari'] = `https://www.google.com/search?igu=1`
+function generateapp(appname) {
+  let newapp = 
+  `<div onclick='makenewwindow("${appslist[appname]}", "${appname}")' class='app-desktop'>
+    <div class='appicon-desktop'>${icondict[appname]}</div>
+    <div class='appname-desktop'>${appname}</div>
+  </div>`
+
+  document.getElementById('appcontainer').innerHTML += newapp;
+}
+
+window.onload=function(){
+  generateapp('files')
+  generateapp('email')
+  generateapp('safari')
+}
