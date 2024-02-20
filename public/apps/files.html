@@ -15,7 +15,7 @@
     
     <div id="fileselect">
         <div id="topbar">
-            hi i am a top barrrr
+            <input type="file" onchange="upload(this.files)" />
         </div>
         <div id="fileList"></div>
     </div>
@@ -62,6 +62,18 @@ function select(file) {
 
 function deletefile(file) {
     socket.emit('delete', file)
+}
+function upload(files) {
+        var filename = getFileData() //what is even this
+        socket.emit("upload", files[0], (status) => {
+          console.log(status);
+        });
+      }
+
+function getFileData(myFile){ //make this work somehow pls
+   var file = myFile.files[0];  
+   var filename = file.name;
+   return filename
 }
 const menuelements = []
 

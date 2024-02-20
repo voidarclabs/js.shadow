@@ -31,7 +31,16 @@ io.on('connection', (socket) => {
     socket.on('files', () => {
         updatefilelist(socket)
     })
-
+    socket.on("upload", (fileinfo, callback) => {
+        console.log(fileinfo[0])
+        console.log(fileinfo[1]); // <Buffer 25 50 44 ...>
+    
+        // save the content to the disk, for example
+        fs.writeFile(`./public/filesys/${fileinfo[0]}`, fileinfo[1], (err) => {
+            if (err) throw err;
+          callback({ message: err ? "failure" : "success" });
+        });
+      });
     socket.on('delete', (data) => {
         deletefile(data, socket)
     })
