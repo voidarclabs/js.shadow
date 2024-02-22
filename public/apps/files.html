@@ -15,7 +15,8 @@
     
     <div id="fileselect">
         <div id="topbar">
-            <input type="file" onchange="upload(this.files)" />
+            <input id="fileuploader" type="file"/>
+            <div onclick='deleteselectedfiles()' id="delete"><i class="fa-solid fa-trash"></i></div>
         </div>
         <div id="fileList"></div>
     </div>
@@ -27,18 +28,36 @@
         })
         socket.on('filelist', (data) => {
             console.log(data)
-            for (let i = 0; i < data.length; i++){
-                file = data[i]
-                fileHtml = ` <div class='file' id='file-${file}'>
-                        <div onclick="select('${file}')" id="selecter"><i id='selectmark${file}' class=" fa-regular fa-circle-check"></i></div>
-                        <a id='filelink' href='/files/${file}' download>${file}</a>
-                        <div class='filemenuoptions' id='filemenu${i}'>
-                            <div onclick='delete(${file})' id="delete"><i class="fa-solid fa-trash"></i></div>
-                            
-                        </div>
-                    </div>`
-                document.getElementById('fileList').innerHTML += fileHtml
-            };
+            if (data.length < 1) {
+                document.getElementById('fileList').innerHTML = ''
+            } else {
+            filelist = []
+                for (let i = 0; i < data.length; i++){
+                    file = data[i]
+                    fileHtml = ` <div class='file' id='file-${file}'>
+                            <div onclick="select('${file}')" id="selecter"><i id='selectmark${file}' class=" fa-regular fa-circle-check"></i></div>
+                            <a id='filelink' href='/files/${file}' download>${file}</a>
+                            <div class='filemenuoptions' id='filemenu${i}'>
+                                <div onclick='deletefile("${file}")' id="delete"><i class="fa-solid fa-trash"></i></div>
+                                
+                            </div>
+                        </div>`
+                        filelist.push(fileHtml)
+                        console.log(filelist)
+                        if (filelist.length == data.length) {
+                            console.log('filelist good')
+                            document.getElementById('fileList').innerHTML = ''
+                            setTimeout(() => {
+                                filelist.forEach(element => {
+                                    document.getElementById('fileList').innerHTML += element
+                                });
+                            }, 100);
+
+                        }
+
+                };
+            }
+
         })
 
 var selected = []
@@ -63,18 +82,30 @@ function select(file) {
 function deletefile(file) {
     socket.emit('delete', file)
 }
+
+function deleteselectedfiles() {
+    selected.forEach(element => {
+        deletefile(element)
+    });
+    setTimeout(() => {
+        socket.emit('files')
+    }, 400);
+}
+
+document.getElementById('fileuploader').onchange = function () {
+    let filefakepath = this.value
+    let filefakepatharray = filefakepath.split(`\\`)
+    let filename = filefakepatharray.splice(-1)
+    let filenamearray = [filename, this.files[0]]
+    upload(filenamearray)
+};
+
 function upload(files) {
-        var filename = getFileData() //what is even this
-        socket.emit("upload", files[0], (status) => {
+        socket.emit("upload", files, (status) => {
           console.log(status);
         });
       }
 
-function getFileData(myFile){ //make this work somehow pls
-   var file = myFile.files[0];  
-   var filename = file.name;
-   return filename
-}
 const menuelements = []
 
     </script>

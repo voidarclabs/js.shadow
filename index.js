@@ -5,6 +5,8 @@ const fileSys = './public/filesys/';
 const fs = require('fs');
 const nthline = require('nthline')
 const nodemailer = require('nodemailer');
+const stat = require('fs').statSync;
+const AdmZip = require('adm-zip');
 
 const app = express();
 
@@ -39,10 +41,17 @@ io.on('connection', (socket) => {
         fs.writeFile(`./public/filesys/${fileinfo[0]}`, fileinfo[1], (err) => {
             if (err) throw err;
           callback({ message: err ? "failure" : "success" });
+          setTimeout(() => {
+            updatefilelist(socket)
+          }, 200);
         });
       });
     socket.on('delete', (data) => {
+        console.log(data + ' deleted')
         deletefile(data, socket)
+    })
+    socket.on('download', (data) => {
+        // make zip of selected files, reupload and delete zip
     })
 
     socket.on('email', () => {
@@ -93,16 +102,27 @@ function updatefilelist(socket) {
 
 
 function deletefile(file, socket) {
-    exec(`rm ${file}`, (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`);
-            return;
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return;
-        }
-        console.log(`stdout: ${stdout}`);
+    fs.unlink(`public/filesys/${file}`, (err) => {
+        if (err) throw err;
+        console.log(`${file} deleted`)
         updatefilelist(socket)
+    })
+
+}
+
+function newarchive(zipFileName, pathNames) {
+
+    const zip = new AdmZip();
+
+    pathNames.forEach(path => {
+        const p = stat(path);
+        if (p.isFile()) {
+            zip.addLocalFile(path);
+        } else if (p.isDirectory()) {
+            zip.addLocalFolder(path, path);
+        }
     });
+
+    zip.writeZip(zipFileName);
+
 }

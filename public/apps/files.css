@@ -30,6 +30,10 @@ body {
     border-width: 1px 0px 0px 0px ;
 }
 
+#fileList :only-child {
+    border-radius: 10px;
+}
+
 .file {
     padding: 5px;
     background-color: white;
