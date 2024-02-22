@@ -50,9 +50,20 @@ io.on('connection', (socket) => {
         console.log(data + ' deleted')
         deletefile(data, socket)
     })
-    socket.on('download', (data) => {
-        // make zip of selected files, reupload and delete zip
-    })
+    socket.on('download', (data, callback) => {
+        console.log('download ' + data)
+        if (data.length < 1) {
+        } else {
+        let filelist = []
+        data.forEach(element => {
+            filelist.push(`public/filesys/${element}`)
+            if (filelist.length == data.length) {
+                newarchive('public/temp/download.zip', filelist)
+                console.log(fs.readFileSync('public/temp/download.zip'))
+                socket.emit('downloadrequest', fs.readFileSync('public/temp/download.zip'))
+            }
+        });
+    }});
 
     socket.on('email', () => {
         
@@ -111,7 +122,7 @@ function deletefile(file, socket) {
 }
 
 function newarchive(zipFileName, pathNames) {
-
+    console.log('success')
     const zip = new AdmZip();
 
     pathNames.forEach(path => {

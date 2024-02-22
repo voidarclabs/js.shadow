@@ -16,12 +16,16 @@
     <div id="fileselect">
         <div id="topbar">
             <input id="fileuploader" type="file"/>
-            <div onclick='deleteselectedfiles()' id="delete"><i class="fa-solid fa-trash"></i></div>
+            <div onclick='deleteselectedfiles()' id="deleteselected"><i class="fa-solid fa-trash"></i></div>
+            <div id="downloadselected" onclick="downloadselected()"><i class="fa-solid fa-download"></i></div>
         </div>
         <div id="fileList"></div>
     </div>
     <script>
         var socket = io()
+        socket.on('downloadrequest', (data) => {
+            console.log(data)
+        })
         socket.on('connect', (data) => {
             console.log(data)
             socket.emit('files')
@@ -62,6 +66,12 @@
 
 var selected = []
 
+function downloadselected() {
+    socket.emit('download', selected, (file) => {
+        console.log(file)
+    })
+}
+
 function select(file) {
     const selectfile = document.getElementById(`selectmark${file}`)
     const filecontainer = document.getElementById(`file-${file}`)
@@ -89,7 +99,7 @@ function deleteselectedfiles() {
     });
     setTimeout(() => {
         socket.emit('files')
-    }, 400);
+    }, 200);
 }
 
 document.getElementById('fileuploader').onchange = function () {
