@@ -43,6 +43,7 @@ body {
     display: grid;
     grid-template-columns: 31px 200px auto 200px;
     transition: background-color 0.2s;
+    transition: 1s all;
 }
 
 .fileselected {
@@ -67,8 +68,21 @@ body {
     display: flex;
 }
 
-#delete {
+.fileoption {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+
+
+.filedownloader {
+    height: 0;
+    width: 0;
+}
+
+.edittextbox {
+    display: none;
+    height: 1px;
+    width: 100%;
 }

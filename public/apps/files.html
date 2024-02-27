@@ -22,9 +22,13 @@
         <div id="fileList"></div>
     </div>
     <script>
-        var socket = io()
+        const socket = io()
+        let downloads = 0
         socket.on('downloadrequest', (data) => {
-            console.log(data)
+            document.body.innerHTML += `<div class='filedownloader'><a id='download${downloads}' href='${data}'></a></div>`
+            document.getElementById(`download${downloads}`).click()
+            document.getElementById(`download${downloads}`).remove()
+            downloads++
         })
         socket.on('connect', (data) => {
             console.log(data)
@@ -42,8 +46,8 @@
                             <div onclick="select('${file}')" id="selecter"><i id='selectmark${file}' class=" fa-regular fa-circle-check"></i></div>
                             <a id='filelink' href='/files/${file}' download>${file}</a>
                             <div class='filemenuoptions' id='filemenu${i}'>
-                                <div onclick='deletefile("${file}")' id="delete"><i class="fa-solid fa-trash"></i></div>
-                                
+                                <div class='fileoption' onclick='deletefile("${file}")' id="delete"><i class="fa-solid fa-trash"></i></div>
+                                <div class='fileoption' onclick='editfile("${file}")' id="edit"><i class="fa-solid fa-pencil"></i></div>
                             </div>
                         </div>`
                         filelist.push(fileHtml)
@@ -71,6 +75,23 @@ function downloadselected() {
         console.log(file)
     })
 }
+
+function editfile(file) {
+    socket.emit('editfile', file)
+}
+
+socket.on('editfilecontent', (data) => {
+    let filename = data[0]
+    let filecontent = data[1]
+    let filecontainer = document.getElementById(`file-${filename}`)
+    filecontainer.style.height = `145px`
+    let textbox = document.createElement('input')
+    textbox.type = 'text'
+    textbox.className = 'exittextbox'
+    textbox.id = `textbox${filename}`
+    document.insertBefore(textbox, document.getElementById(`file-${filename}`).nextSibling)
+    // DOMException: Failed to execute 'insertBefore' on 'Node': The node before which the new node is to be inserted is not a child of this node.
+})
 
 function select(file) {
     const selectfile = document.getElementById(`selectmark${file}`)

@@ -16,7 +16,7 @@ app.use(express.static(path.resolve(__dirname, 'public', '')));
 app.use('/apps', express.static(path.resolve(__dirname, 'public', 'apps')));
 app.use('/files', express.static(path.resolve(__dirname, 'public', 'filesys')));
 app.use('/imgs', express.static(path.resolve(__dirname, 'public', 'imgs')));
-app.use('/term', express.static('localhost:6060'))
+app.use('/temp', express.static(path.resolve(__dirname, 'public', 'temp')));
 
 app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public'));
@@ -59,11 +59,17 @@ io.on('connection', (socket) => {
             filelist.push(`public/filesys/${element}`)
             if (filelist.length == data.length) {
                 newarchive('public/temp/download.zip', filelist)
-                console.log(fs.readFileSync('public/temp/download.zip'))
-                socket.emit('downloadrequest', fs.readFileSync('public/temp/download.zip'))
+                socket.emit('downloadrequest', '/temp/download.zip')
             }
         });
     }});
+
+    socket.on('editfile', (data) => {
+        let filepathreal = `public/filesys/${data}`
+        let filecontent = fs.readFileSync(filepathreal, 'utf8')
+        let filedata = [data, filecontent]
+        socket.emit('editfilecontent', filedata)
+    })
 
     socket.on('email', () => {
         
@@ -97,6 +103,13 @@ io.on('connection', (socket) => {
                     console.log('Email sent successfully');
                 }
             });
+            })
+            socket.on('readfile', (data) => {
+                const filepath = `public/filesys/${data}`
+                readFileContent(filepath, (err, filecontent) => {
+                    if (err) throw err;
+                    socket.emit('fileeditcontent', filecontent)
+                })
             })
         })
     })
@@ -137,3 +150,16 @@ function newarchive(zipFileName, pathNames) {
     zip.writeZip(zipFileName);
 
 }
+
+function readFileContent(filePath, callback) {
+    // Use fs.readFile to read the content of the file
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        // Handle error, for example by passing it to the callback
+        return callback(err, null);
+      }
+      
+      // If successful, pass the data to the callback
+      callback(null, data);
+    });
+  }
