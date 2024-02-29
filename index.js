@@ -33,6 +33,16 @@ io.on('connection', (socket) => {
     socket.on('files', () => {
         updatefilelist(socket)
     })
+    socket.on('writetofile', (fileinfo) =>{
+        let filename = fileinfo[0]
+        let filecontent = fileinfo[1]
+        fs.writeFile(`./public/filesys/${fileinfo[0]}`, fileinfo[1], (err) => {
+            if (err) throw err;
+          setTimeout(() => {
+            updatefilelist(socket)
+          }, 200);
+        });
+    })
     socket.on("upload", (fileinfo, callback) => {
         console.log(fileinfo[0])
         console.log(fileinfo[1]); // <Buffer 25 50 44 ...>
