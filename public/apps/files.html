@@ -16,8 +16,10 @@
     <div id="fileselect">
         <div id="topbar">
             <input id="fileuploader" type="file"/>
-            <div onclick='deleteselectedfiles()' id="deleteselected"><i class="fa-solid fa-trash"></i></div>
-            <div id="downloadselected" onclick="downloadselected()"><i class="fa-solid fa-download"></i></div>
+            <div id="topbarmenu" class="filemenuoptions">
+                <div onclick='deleteselectedfiles()' id="deleteselected"><i class="fa-solid fa-trash"></i></div>
+                <div id="downloadselected" onclick="downloadselected()"><i class="fa-solid fa-download"></i></div>
+            </div>
         </div>
         <div id="fileList"></div>
     </div>
