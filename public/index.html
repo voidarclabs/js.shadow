@@ -157,9 +157,39 @@
         .appname-desktop::first-letter {
           text-transform:capitalize;
         }
+        
+        #contextMenu {
+          position: absolute;
+          display: none;
+          background-color: rgba(160, 160, 160, 0.541);
+          backdrop-filter: blur(15px);
+          border-radius: 10px;
+        }
+
+        #contextmenuoption {
+          border-color: #00000000;
+          border-bottom: #363636;
+          border-style: solid;
+          width: 170px;
+          padding-left: 5px;
+          border-width: 1px;
+          padding-top: 2.5px;
+          padding-bottom: 2.5px;
+        }
+
+        #contextmenuoption:last-child {
+          border-bottom: #36363600;
+        }
     </style>
 </head>
 <body>
+  <div id="contextMenu">
+    <div id="contextmenuoption">hi</div>
+    <div id="contextmenuoption">hello</div>
+    <div id="contextmenuoption">wassup</div>
+    <div id="contextmenuoption">cools</div>
+    <div id="contextmenuoption">verrie cool</div>
+  </div>
   <div id="windowcontainer"></div>
   <div id="appcontainer"></div>
     <script src="windowmanager.js"></script>

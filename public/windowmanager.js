@@ -259,10 +259,12 @@ function minimisewindow(window) {
   }
 
 }
+
 let appslist = {}
 appslist['files'] = `apps/files.html`
 appslist['email'] = `apps/email.html`
 appslist['safari'] = `https://www.google.com/search?igu=1`
+
 function generateapp(appname) {
   let newapp = 
   `<div onclick='makenewwindow("${appslist[appname]}", "${appname}")' class='app-desktop'>
@@ -278,3 +280,31 @@ window.onload=function(){
   generateapp('email')
   generateapp('safari')
 }
+
+document.oncontextmenu = rightClick; 
+  
+document.onclick = hideMenu; 
+document.oncontextmenu = rightClick; 
+  
+function hideMenu() { 
+    document.getElementById("contextMenu") 
+            .style.display = "none" 
+} 
+
+function rightClick(e) { 
+    e.preventDefault(); 
+
+    if (document.getElementById("contextMenu") 
+            .style.display == "block") 
+          setTimeout(() => {
+            hideMenu(); 
+          }, 10);
+
+    else{ 
+        var menu = document.getElementById("contextMenu") 
+
+        menu.style.display = 'block'; 
+        menu.style.left = e.pageX + "px"; 
+        menu.style.top = e.pageY + "px"; 
+    } 
+} 
