@@ -1,3 +1,5 @@
+const { Socket } = require("socket.io");
+
 let i = 0;
 
 document.addEventListener('mousedown', function (e) {
@@ -66,6 +68,8 @@ function hideframe(resizerId) {
     }
   }
 }
+
+
 
 function makeResizableAndDraggable(element, resizer) {
     let isResizing = false;
@@ -267,9 +271,10 @@ appslist['safari'] = `https://www.google.com/search?igu=1`
 
 function generateapp(appname) {
   let newapp = 
-  `<div onclick='makenewwindow("${appslist[appname]}", "${appname}")' class='app-desktop'>
+  `<div id='app-desktop-${appname}' onclick='makenewwindow("${appslist[appname]}", "${appname}")' class='app-desktop'>
     <div class='appicon-desktop'>${icondict[appname]}</div>
     <div class='appname-desktop'>${appname}</div>
+    <div id='resizer-desktop-${appname}' class='resizer-desktop'></div>
   </div>`
 
   document.getElementById('appcontainer').innerHTML += newapp;
@@ -283,12 +288,15 @@ window.onload=function(){
 
 document.oncontextmenu = rightClick; 
   
-document.onclick = hideMenu; 
+document.onclick = hideMenu;
 document.oncontextmenu = rightClick; 
   
 function hideMenu() { 
+  setTimeout(() => {
     document.getElementById("contextMenu") 
-            .style.display = "none" 
+      .style.display = "none" 
+  }, 50);
+
 } 
 
 function rightClick(e) { 

@@ -50,6 +50,7 @@
                             <div class='filemenuoptions' id='filemenu${i}'>
                                 <div class='fileoption' onclick='deletefile("${file}")' id="delete"><i class="fa-solid fa-trash"></i></div>
                                 <div class='fileoption' onclick='editfile("${file}")' id="edit"><i class="fa-solid fa-pencil"></i></div>
+                                <div class='fileoption' onclick='makefilewallpaper("${file}")' id="edit"><i class="fa-regular fa-image"></i></i></div>
                             </div>
                         </div>`
                         filelist.push(fileHtml)
@@ -71,11 +72,36 @@
         })
 
 var selected = []
+const imageFileExtensions = [
+    "jpeg",
+    "jpg",
+    "png",
+    "gif",
+    "bmp",
+    "webp",
+    "svg",
+    "tiff",
+    "tif",
+    "ico"
+];
 
 function downloadselected() {
     socket.emit('download', selected, (file) => {
         console.log(file)
     })
+}
+
+function makefilewallpaper(file) {
+    let filenamesplit = file.split('.')
+    let extension = filenamesplit[filenamesplit.length-1]
+    console.log(filenamesplit[filenamesplit.length-1])
+    let lowerCaseExtension = extension.toLowerCase();
+    if (imageFileExtensions.includes(lowerCaseExtension)) {
+        console.log('papered')
+        socket.emit('makeimagewallpaper', file)
+    } else {
+        console.log('not papered')
+    }
 }
 
 function editfile(file) {

@@ -81,6 +81,12 @@ io.on('connection', (socket) => {
         socket.emit('editfilecontent', filedata)
     })
 
+    socket.on('makeimagewallpaper', (data) => {
+        let pathtoimage = `filesys/${data}`
+        console.log(pathtoimage)
+        socket.emit('makewallpaper', pathtoimage)
+    })
+
     socket.on('email', () => {
         
         var logininfo = fs.readFileSync('login').toString().split("\n");

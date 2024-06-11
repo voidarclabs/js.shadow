@@ -164,6 +164,7 @@
           background-color: rgba(160, 160, 160, 0.541);
           backdrop-filter: blur(15px);
           border-radius: 10px;
+          z-index: 10;
         }
 
         #contextmenuoption {
@@ -180,11 +181,17 @@
         #contextmenuoption:last-child {
           border-bottom: #36363600;
         }
+
+        .resizer-desktop {
+          height: 0;
+          width: 0;
+          position: absolute;
+        }
     </style>
 </head>
 <body>
   <div id="contextMenu">
-    <div id="contextmenuoption">hi</div>
+    <div id="contextmenuoption" onclick="console.log('hi')">hi</div>
     <div id="contextmenuoption">hello</div>
     <div id="contextmenuoption">wassup</div>
     <div id="contextmenuoption">cools</div>
