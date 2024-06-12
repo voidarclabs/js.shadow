@@ -33,6 +33,10 @@ io.on('connection', (socket) => {
     socket.on('files', () => {
         updatefilelist(socket)
     })
+    socket.on('desktop', (callback) => {
+        let err = false
+        callback({ message: err ? "failure" : "success" })
+    })
     socket.on('writetofile', (fileinfo) =>{
         let filename = fileinfo[0]
         let filecontent = fileinfo[1]
@@ -84,7 +88,7 @@ io.on('connection', (socket) => {
     socket.on('makeimagewallpaper', (data) => {
         let pathtoimage = `filesys/${data}`
         console.log(pathtoimage)
-        socket.emit('makewallpaper', pathtoimage)
+        socket.emit('wallpaper', pathtoimage)
     })
 
     socket.on('email', () => {

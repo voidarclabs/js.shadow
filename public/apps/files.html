@@ -32,6 +32,9 @@
             document.getElementById(`download${downloads}`).remove()
             downloads++
         })
+        socket.on('wallpaper', (data) => {
+            console.log(data)
+        })
         socket.on('connect', (data) => {
             console.log(data)
             socket.emit('files')

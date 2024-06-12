@@ -1,5 +1,3 @@
-const { Socket } = require("socket.io");
-
 let i = 0;
 
 document.addEventListener('mousedown', function (e) {

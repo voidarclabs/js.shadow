@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/ea3f46344d.js" crossorigin="anonymous"></script>
     <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'>
+    <script src="/socket.io/socket.io.js"></script>
     <title>Voidarc</title>
     <style>
         body {
@@ -200,5 +201,15 @@
   <div id="windowcontainer"></div>
   <div id="appcontainer"></div>
     <script src="windowmanager.js"></script>
+    <script>
+      const socket = io()
+
+      socket.on('connect', (data) => {
+            socket.emit('desktop', (handshake) => {
+              console.log('connected good jaaa')
+            })
+        })
+
+    </script>
 </body>
 </html>
